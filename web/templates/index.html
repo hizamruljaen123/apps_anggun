@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <div id="loading-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center; color: white; font-size: 20px; padding-top: 20%;">
+        Loading, please wait...
+    </div>
+    
     <div class="container-fluid">
         <!-- Sidebar -->
         <div class="row">
@@ -28,8 +32,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-cogs"></i> Settings
+                            <a class="nav-link" onclick="retrainModel()">
+                                <i class="fas fa-cogs"></i> Retrain Model
                             </a>
                         </li>
                     </ul>
@@ -48,12 +52,39 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Cluster Data</h5>
-                        <!-- Dynamic table content -->
+                        <div class="table-container">
+                            <!-- Dynamic table content -->
                         {{ table_content | safe }}
+                        </div>
+                        <br>
+                        <br>
+                        <h5 class="card-title">Data Model</h5>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID Balita</th>
+                                        <th>Nama</th>
+                                        <th>Usia (bulan)</th>
+                                        <th>Tinggi Badan (cm)</th>
+                                        <th>Berat Badan (kg)</th>
+                                        <th>Status Gizi Ibu</th>
+                                        <th>Riwayat Penyakit</th>
+                                        <th>Kondisi Lingkungan</th>
+                                        <th>Akses Layanan Kesehatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
                     </div>
                 </div>
 
                 <div class="row">
+                    <!-- Grafik GMM -->
                     <div class="col-md-6">
                         <div class="card mt-4">
                             <div class="card-header">
@@ -67,6 +98,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Visualisasi t-SNE -->
                     <div class="col-md-6">
                         <div class="card mt-4">
                             <div class="card-header">
@@ -85,7 +118,85 @@
     </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+    // Function to fetch data from the API
+    function fetchData() {
+        $.ajax({
+            url: "http://127.0.0.1:5000/data", // API endpoint
+            method: "GET", // HTTP method
+            dataType: "json", // Expected response type
+            success: function (response) {
+                // Populate the table with the response data
+                populateTable(response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            },
+        });
+    }
+
+    // Function to populate the table with data
+    function populateTable(data) {
+        const tableBody = $("#table-body");
+        tableBody.empty(); // Clear existing table rows
+
+        data.forEach((item) => {
+            const row = `
+                <tr>
+                    <td>${item["ID Balita"]}</td>
+                    <td>${item["Nama"]}</td>
+                    <td>${item["Usia (bulan)"]}</td>
+                    <td>${Math.round(item["Tinggi Badan (cm)"])}</td>
+                    <td>${Math.round(item["Berat Badan (kg)"])}</td>
+                    <td>${item["Status Gizi Ibu"]}</td>
+                    <td>${item["Riwayat Penyakit"]}</td>
+                    <td>${item["Kondisi Lingkungan"]}</td>
+                    <td>${item["Akses Layanan Kesehatan"]}</td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+
+
+
+
+
+    // Fetch data when the page loads
+    fetchData();
+});
+
+function retrainModel() {
+    // Tampilkan loading screen
+    $("#loading-screen").show();
+
+    // Kirim permintaan untuk melatih ulang model
+    $.ajax({
+        url: "http://127.0.0.1:5000/training_data", // Endpoint untuk melatih ulang model
+        method: "GET", // Gunakan metode POST untuk memulai proses pelatihan
+        success: function (response) {
+            // Sembunyikan loading screen
+            $("#loading-screen").hide();
+
+            // Tampilkan pesan jika berhasil
+            alert("Model sudah dilatih ulang");
+            // Segarkan halaman
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            // Sembunyikan loading screen
+            $("#loading-screen").hide();
+
+            // Tampilkan pesan kesalahan jika gagal
+            console.error("Error during training:", error);
+            alert("Terjadi kesalahan saat melatih ulang model");
+        },
+    });
+}
+
+    </script>
 </body>
 </html>

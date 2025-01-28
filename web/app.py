@@ -64,54 +64,57 @@ def log_likelihood(X, weights, means, covariances):
 
 @app.route('/')
 def index():
-    output_excel_path = 'static/clustered_data_manual.xlsx'
+    output_excel_path = 'static/predicted_data.xlsx'
 
-    if os.path.exists(output_excel_path):
-        df = pd.read_excel(output_excel_path)
+    if not os.path.exists(output_excel_path):
+        return "Error: File hasil prediksi tidak ditemukan. Jalankan proses prediksi terlebih dahulu.", 404
 
-        # Validasi apakah kolom 'Cluster' ada
-        if 'Cluster' not in df.columns:
-            return "Error: Kolom 'Cluster' tidak ditemukan dalam data clustering.", 500
-    else:
-        return "Error: File hasil clustering tidak ditemukan. Jalankan proses clustering terlebih dahulu.", 404
+    df = pd.read_excel(output_excel_path)
 
-    # Tambahkan label stunting dalam bentuk string berdasarkan cluster
+    # Validasi kolom yang diperlukan
+    required_columns = ['t-SNE 1', 't-SNE 2', 'Predicted Cluster', 'Tinggi Badan (cm)', 'Berat Badan (kg)']
+    if not all(col in df.columns for col in required_columns):
+        return "Error: File hasil prediksi tidak valid. Kolom yang diperlukan tidak ditemukan.", 500
+
+    # Mapping label stunting
     cluster_mapping = {
         0: 'Tidak Stunting',
         1: 'Potensi Stunting'
     }
-    df['Stunting Label'] = df['Cluster'].map(cluster_mapping).fillna('Cluster Tidak Dikenal')
+    df['Stunting Label'] = df['Predicted Cluster'].map(cluster_mapping).fillna('Cluster Tidak Dikenal')
 
-    # Visualisasi clustering menggunakan Plotly berdasarkan nilai normalisasi hasil GMM
+    # Visualisasi scatter plot GMM
     fig_gmm = go.Figure()
-    clusters = df['Cluster'].values
+    clusters = df['Predicted Cluster'].values
     for cluster in np.unique(clusters):
         cluster_label = cluster_mapping.get(cluster, f'Cluster {cluster}')
-        cluster_data = df[df['Cluster'] == cluster]
-        fig_gmm.add_trace(go.Scatter(x=cluster_data['Tinggi Badan (cm)'], 
-                                      y=cluster_data['Berat Badan (kg)'], 
-                                      mode='markers', name=cluster_label))
+        cluster_data = df[df['Predicted Cluster'] == cluster]
+        fig_gmm.add_trace(go.Scatter(
+            x=cluster_data['Tinggi Badan (cm)'],
+            y=cluster_data['Berat Badan (kg)'],
+            mode='markers',
+            name=cluster_label
+        ))
 
     fig_gmm.update_layout(
         title="Clustering of Balita Data Using Manual GMM",
-        xaxis_title="Tinggi Badan (cm) (normalized)",
-        yaxis_title="Berat Badan (kg) (normalized)",
+        xaxis_title="Tinggi Badan (cm)",
+        yaxis_title="Berat Badan (kg)",
         showlegend=True,
         height=850
     )
 
     # Visualisasi t-SNE
-    features = ['Tinggi Badan (cm)', 'Berat Badan (kg)']
-    X = df[features].values
-    X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
-    tsne_results = TSNE(n_components=2, random_state=42).fit_transform(X_normalized)
-
     fig_tsne = go.Figure()
     for cluster in np.unique(clusters):
         cluster_label = cluster_mapping.get(cluster, f'Cluster {cluster}')
-        cluster_data_tsne = tsne_results[df['Cluster'] == cluster]
-        fig_tsne.add_trace(go.Scatter(x=cluster_data_tsne[:, 0], y=cluster_data_tsne[:, 1], 
-                                       mode='markers', name=cluster_label))
+        cluster_data_tsne = df[df['Predicted Cluster'] == cluster]
+        fig_tsne.add_trace(go.Scatter(
+            x=cluster_data_tsne['t-SNE 1'],
+            y=cluster_data_tsne['t-SNE 2'],
+            mode='markers',
+            name=cluster_label
+        ))
 
     fig_tsne.update_layout(
         title="t-SNE Visualization of Clustering",
@@ -122,7 +125,7 @@ def index():
     )
 
     # Tampilkan tabel data
-    table_content = df[['ID Balita', 'Nama', 'Usia (bulan)', 'Tinggi Badan (cm)', 'Berat Badan (kg)', 'Stunting Label']].head(10).to_html(classes='table table-bordered', index=False)
+    table_content = df[['ID Balita', 'Nama', 'Usia (bulan)', 'Tinggi Badan (cm)', 'Berat Badan (kg)', 'Stunting Label']].to_html(classes='table table-bordered', index=False)
 
     return render_template('index.html', 
                            graph_html_gmm=fig_gmm.to_html(full_html=False),
@@ -170,10 +173,10 @@ def training_data():
         df[col] = df[col].map(mapping)
 
     X = df[features].values
-    X = (X - X.mean(axis=0)) / X.std(axis=0)
+    X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
 
     k = 2  # Dua kategori: Stunting (1) dan Tidak Stunting (0)
-    weights, means, covariances, _ = gmm(X, k)
+    weights, means, covariances, _ = gmm(X_normalized, k)
 
     model = {
         'weights': weights, 
@@ -210,21 +213,28 @@ def predict():
         df[col] = df[col].map(mapping)
 
     X = df[features].values
-    X = (X - X.mean(axis=0)) / X.std(axis=0)
+    X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
 
     with open(model_path, 'rb') as model_file:
         model = pickle.load(model_file)
 
     weights, means, covariances = model['weights'], model['means'], model['covariances']
-    clusters = e_step(X, weights, means, covariances).argmax(axis=1)
+    clusters = e_step(X_normalized, weights, means, covariances).argmax(axis=1)
 
+    # Simpan hasil prediksi ke DataFrame
     df['Predicted Cluster'] = clusters
     df['Stunting Label'] = df['Predicted Cluster'].apply(lambda x: 'Potensi Stunting' if x == 1 else 'Tidak Stunting')
+
+    # Hitung t-SNE
+    tsne_results = TSNE(n_components=2, random_state=42).fit_transform(X_normalized)
+    df['t-SNE 1'] = tsne_results[:, 0]
+    df['t-SNE 2'] = tsne_results[:, 1]
+
+    # Simpan ke file Excel
     output_path = 'static/predicted_data.xlsx'
     df.to_excel(output_path, index=False)
 
     return jsonify({"message": "Prediction completed and results saved.", "output_file": output_path})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
