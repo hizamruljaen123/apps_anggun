@@ -3,10 +3,15 @@ import pandas as pd
 import numpy as np
 import os
 import pickle
+from datetime import datetime
 from sklearn.manifold import TSNE
 import plotly.graph_objs as go
 
 app = Flask(__name__)
+
+# Konstanta untuk file data dan sheet yang digunakan
+DATA_FILE = "main_data.xlsx"
+SHEET_NAME = "Sheet1"
 
 # Fungsi untuk menghitung PDF Gaussian
 def gaussian_pdf(X, mean, cov, epsilon=1e-6):
@@ -34,7 +39,6 @@ def e_step(X, weights, means, covariances):
 def m_step(X, resp):
     n, d = X.shape
     k = resp.shape[1]
-
     weights = resp.sum(axis=0) / n
     means = np.dot(resp.T, X) / resp.sum(axis=0)[:, np.newaxis]
     covariances = []
@@ -62,17 +66,23 @@ def log_likelihood(X, weights, means, covariances):
     likelihood = np.array([weights[k] * gaussian_pdf(X, means[k], covariances[k]) for k in range(len(weights))]).sum(axis=0)
     return np.sum(np.log(likelihood))
 
+# Fungsi untuk menghitung usia (bulan) dari Tgl Lahir
+def calculate_age_in_months(birth_date):
+    today = datetime.today()
+    return (today.year - birth_date.year) * 12 + today.month - birth_date.month
+
 @app.route('/')
 def index():
     output_excel_path = 'static/predicted_data.xlsx'
-
     if not os.path.exists(output_excel_path):
         return "Error: File hasil prediksi tidak ditemukan. Jalankan proses prediksi terlebih dahulu.", 404
 
     df = pd.read_excel(output_excel_path)
-
+    
     # Validasi kolom yang diperlukan
-    required_columns = ['t-SNE 1', 't-SNE 2', 'Predicted Cluster', 'Tinggi Badan (cm)', 'Berat Badan (kg)']
+    required_columns = ['t-SNE 1', 't-SNE 2', 'Predicted Cluster',
+                        'Tinggi Badan (cm)', 'Berat Badan (kg)', 
+                        'JK', 'Posyandu', 'Desa/Kel']
     if not all(col in df.columns for col in required_columns):
         return "Error: File hasil prediksi tidak valid. Kolom yang diperlukan tidak ditemukan.", 500
 
@@ -83,7 +93,9 @@ def index():
     }
     df['Stunting Label'] = df['Predicted Cluster'].map(cluster_mapping).fillna('Cluster Tidak Dikenal')
 
-    # Visualisasi scatter plot GMM
+    # ----------------
+    # GRAFIK GMM
+    # ----------------
     fig_gmm = go.Figure()
     clusters = df['Predicted Cluster'].values
     for cluster in np.unique(clusters):
@@ -95,7 +107,6 @@ def index():
             mode='markers',
             name=cluster_label
         ))
-
     fig_gmm.update_layout(
         title="Clustering of Balita Data Using Manual GMM",
         xaxis_title="Tinggi Badan (cm)",
@@ -104,7 +115,9 @@ def index():
         height=850
     )
 
-    # Visualisasi t-SNE
+    # ----------------
+    # GRAFIK t-SNE
+    # ----------------
     fig_tsne = go.Figure()
     for cluster in np.unique(clusters):
         cluster_label = cluster_mapping.get(cluster, f'Cluster {cluster}')
@@ -115,7 +128,6 @@ def index():
             mode='markers',
             name=cluster_label
         ))
-
     fig_tsne.update_layout(
         title="t-SNE Visualization of Clustering",
         xaxis_title="t-SNE Dimension 1",
@@ -124,24 +136,163 @@ def index():
         height=850
     )
 
-    # Tampilkan tabel data
-    table_content = df[['ID Balita', 'Nama', 'Usia (bulan)', 'Tinggi Badan (cm)', 'Berat Badan (kg)', 'Stunting Label']].to_html(classes='table table-bordered', index=False)
+    # ======================================================
+    # FUNGSI BANTUAN UNTUK MEMBUAT TABEL FREKUENSI & PERSEN
+    # ======================================================
+    def create_freq_table(df_grouped, category_name):
+        """
+        df_grouped: DataFrame dengan kolom [category, 'Stunting Label', 'count']
+        category_name: Nama kolom kategori (mis. 'JK', 'Posyandu', dll.)
+        """
+        # Hitung total keseluruhan
+        total = df_grouped['count'].sum()
+        # Hitung persentase
+        df_grouped['percentage'] = (df_grouped['count'] / total * 100).round(2)
+        # Ubah nama kolom agar lebih rapi
+        df_grouped.rename(columns={
+            category_name: 'Category',
+            'Stunting Label': 'Label',
+            'count': 'Frequency',
+            'percentage': 'Percentage (%)'
+        }, inplace=True)
+        # Konversi DataFrame ke HTML
+        return df_grouped.to_html(classes='table table-bordered', index=False)
 
-    return render_template('index.html', 
-                           graph_html_gmm=fig_gmm.to_html(full_html=False),
-                           graph_html_tsne=fig_tsne.to_html(full_html=False),
-                           table_content=table_content)
+    # ----------------
+    # GRAFIK GENDER
+    # ----------------
+    gender_counts = df.groupby(['JK', 'Stunting Label']).size().reset_index(name='count')
+    fig_gender = go.Figure()
+    for label in gender_counts['Stunting Label'].unique():
+        data = gender_counts[gender_counts['Stunting Label'] == label]
+        fig_gender.add_trace(go.Bar(
+            x=data['JK'],
+            y=data['count'],
+            name=label
+        ))
+    fig_gender.update_layout(
+        title="Stunting Category by Gender",
+        xaxis_title="Jenis Kelamin",
+        yaxis_title="Jumlah Balita",
+        barmode='group',
+        height=850
+    )
+    # Buat tabel frekuensi & persentase untuk gender
+    table_freq_gender_df = gender_counts.copy()
+    freq_table_gender = create_freq_table(table_freq_gender_df, 'JK')
+
+    # ----------------
+    # GRAFIK POSYANDU (stacked, horizontal)
+    # ----------------
+    posyandu_counts = df.groupby(['Posyandu', 'Stunting Label']).size().reset_index(name='count')
+    fig_posyandu = go.Figure()
+    for label in posyandu_counts['Stunting Label'].unique():
+        data = posyandu_counts[posyandu_counts['Stunting Label'] == label]
+        fig_posyandu.add_trace(go.Bar(
+            y=data['Posyandu'],
+            x=data['count'],
+            name=label,
+            orientation='h'
+        ))
+    fig_posyandu.update_layout(
+        title="Stunting Category by Posyandu ",
+        xaxis_title="Jumlah Balita",
+        yaxis_title="Posyandu",
+        barmode='stack',
+        height=850
+    )
+    # Buat tabel frekuensi & persentase untuk posyandu
+    table_freq_posyandu_df = posyandu_counts.copy()
+    freq_table_posyandu = create_freq_table(table_freq_posyandu_df, 'Posyandu')
+
+    # ----------------
+    # GRAFIK DESA (stacked, horizontal)
+    # ----------------
+    desa_counts = df.groupby(['Desa/Kel', 'Stunting Label']).size().reset_index(name='count')
+    fig_desa = go.Figure()
+    for label in desa_counts['Stunting Label'].unique():
+        data = desa_counts[desa_counts['Stunting Label'] == label]
+        fig_desa.add_trace(go.Bar(
+            y=data['Desa/Kel'],
+            x=data['count'],
+            name=label,
+            orientation='h'
+        ))
+    fig_desa.update_layout(
+        title="Stunting Category by Desa/Kel ",
+        xaxis_title="Jumlah Balita",
+        yaxis_title="Desa/Kel",
+        barmode='stack',
+        height=850
+    )
+    # Buat tabel frekuensi & persentase untuk desa
+    table_freq_desa_df = desa_counts.copy()
+    freq_table_desa = create_freq_table(table_freq_desa_df, 'Desa/Kel')
+
+    # ----------------
+    # GRAFIK RENTANG USIA (5 KATEGORI)
+    # ----------------
+    df['Age Range'] = pd.cut(df['Usia (bulan)'], bins=5, include_lowest=True)
+    age_counts = df.groupby(['Age Range', 'Stunting Label']).size().reset_index(name='count')
+    fig_age = go.Figure()
+    for label in age_counts['Stunting Label'].unique():
+        data = age_counts[age_counts['Stunting Label'] == label]
+        fig_age.add_trace(go.Bar(
+            x=data['Age Range'].astype(str),
+            y=data['count'],
+            name=label
+        ))
+    fig_age.update_layout(
+        title="Stunting Category by Age Range (bulan)",
+        xaxis_title="Rentang Usia (bulan)",
+        yaxis_title="Jumlah Balita",
+        barmode='group',
+        height=850
+    )
+    # Buat tabel frekuensi & persentase untuk rentang usia
+    table_freq_age_df = age_counts.copy()
+    freq_table_age = create_freq_table(table_freq_age_df, 'Age Range')
+
+    # Tampilkan tabel data detail
+    table_columns = [
+        'ID Balita', 'Nama', 'Usia (bulan)',
+        'Tinggi Badan (cm)', 'Berat Badan (kg)',
+        'Desa/Kel', 'Posyandu', 'Stunting Label'
+    ]
+    table_content = df[table_columns].to_html(classes='table table-bordered', index=False)
+
+    return render_template(
+        'index.html',
+        # Grafik
+        graph_html_gmm=fig_gmm.to_html(full_html=False),
+        graph_html_tsne=fig_tsne.to_html(full_html=False),
+        graph_html_gender=fig_gender.to_html(full_html=False),
+        graph_html_posyandu=fig_posyandu.to_html(full_html=False),
+        graph_html_desa=fig_desa.to_html(full_html=False),
+        graph_html_age=fig_age.to_html(full_html=False),
+
+        # Tabel utama
+        table_content=table_content,
+
+        # Tabel frekuensi & persentase
+        freq_table_gender=freq_table_gender,
+        freq_table_posyandu=freq_table_posyandu,
+        freq_table_desa=freq_table_desa,
+        freq_table_age=freq_table_age
+    )
+
 
 @app.route('/data', methods=['GET'])
 def data_json():
-    file_path = '../data.xlsx'
-    if os.path.exists(file_path):
-        return pd.read_excel(file_path).to_json(orient='records'), 200, {'Content-Type': 'application/json'}
+    # Mengembalikan data asli dari file DATA_FILE (Sheet1)
+    if os.path.exists(DATA_FILE):
+        df = pd.read_excel(DATA_FILE, sheet_name=SHEET_NAME)
+        return df.to_json(orient='records'), 200, {'Content-Type': 'application/json'}
     return {"error": "File not found"}, 404
 
 @app.route('/data_result', methods=['GET'])
 def data_result():
-    output_excel_path = 'static/clustered_data_manual.xlsx'
+    output_excel_path = 'static/predicted_data.xlsx'
     if os.path.exists(output_excel_path):
         df = pd.read_excel(output_excel_path)
         return jsonify(df.to_dict(orient='records'))
@@ -149,88 +300,70 @@ def data_result():
 
 @app.route('/training_data', methods=['GET'])
 def training_data():
-    file_path = '../data.xlsx'
     model_path = 'gmm_model.pkl'
-
-    if not os.path.exists(file_path):
+    if not os.path.exists(DATA_FILE):
         return jsonify({"error": "Data file not found."}), 404
 
-    df = pd.read_excel(file_path)
+    # Baca data terbaru dari file DATA_FILE, Sheet1
+    df = pd.read_excel(DATA_FILE, sheet_name=SHEET_NAME)
+    # Hitung usia dalam bulan dari kolom Tgl Lahir
+    df['Usia (bulan)'] = pd.to_datetime(df['Tgl Lahir']).apply(calculate_age_in_months)
 
-    # Mapping untuk kategori stunting (label)
-    stunting_mapping = {'Baik': 0, 'Kurang': 1}
-    df['Label Stunting'] = df['Status Gizi Ibu'].map(stunting_mapping)
-
-    # Fitur untuk pelatihan
-    features = ['Usia (bulan)', 'Tinggi Badan (cm)', 'Berat Badan (kg)', 
-                'Kondisi Lingkungan', 'Akses Layanan Kesehatan']
-
-    mappings = {
-        'Kondisi Lingkungan': {'Baik': 2, 'Sedang': 1, 'Kurang': 0},
-        'Akses Layanan Kesehatan': {'Baik': 2, 'Sedang': 1, 'Kurang': 0}
-    }
-    for col, mapping in mappings.items():
-        df[col] = df[col].map(mapping)
-
-    X = df[features].values
+    # Fitur untuk pelatihan: Gunakan Usia, Tinggi, dan Berat
+    features = ['Usia (bulan)', 'Tinggi', 'Berat']
+    X = df[features].values.astype(float)
     X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
 
-    k = 2  # Dua kategori: Stunting (1) dan Tidak Stunting (0)
+    k = 2  # Dua kategori: Tidak Stunting dan Potensi Stunting
     weights, means, covariances, _ = gmm(X_normalized, k)
-
     model = {
         'weights': weights, 
         'means': means, 
         'covariances': covariances
     }
-
     with open(model_path, 'wb') as model_file:
         pickle.dump(model, model_file)
-
     return jsonify({"message": "Model trained and saved successfully."})
 
 @app.route('/predict', methods=['GET'])
 def predict():
     model_path = 'gmm_model.pkl'
-    test_data_path = '../data.xlsx'
-
     if not os.path.exists(model_path):
         return jsonify({"error": "Model not found. Please train the model first."}), 404
+    if not os.path.exists(DATA_FILE):
+        return jsonify({"error": "Data file not found."}), 404
 
-    if not os.path.exists(test_data_path):
-        return jsonify({"error": "Test data file not found."}), 404
+    # Baca data terbaru dari file DATA_FILE, Sheet1
+    df = pd.read_excel(DATA_FILE, sheet_name=SHEET_NAME)
+    # Hitung usia dalam bulan dari Tgl Lahir
+    df['Usia (bulan)'] = pd.to_datetime(df['Tgl Lahir']).apply(calculate_age_in_months)
 
-    df = pd.read_excel(test_data_path)
-
-    features = ['Usia (bulan)', 'Tinggi Badan (cm)', 'Berat Badan (kg)', 
-                'Kondisi Lingkungan', 'Akses Layanan Kesehatan']
-
-    mappings = {
-        'Kondisi Lingkungan': {'Baik': 2, 'Sedang': 1, 'Kurang': 0},
-        'Akses Layanan Kesehatan': {'Baik': 2, 'Sedang': 1, 'Kurang': 0}
-    }
-    for col, mapping in mappings.items():
-        df[col] = df[col].map(mapping)
-
-    X = df[features].values
+    # Fitur untuk prediksi: Gunakan Usia, Tinggi, dan Berat
+    features = ['Usia (bulan)', 'Tinggi', 'Berat']
+    X = df[features].values.astype(float)
     X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
 
+    # Load model GMM
     with open(model_path, 'rb') as model_file:
         model = pickle.load(model_file)
-
     weights, means, covariances = model['weights'], model['means'], model['covariances']
     clusters = e_step(X_normalized, weights, means, covariances).argmax(axis=1)
-
-    # Simpan hasil prediksi ke DataFrame
     df['Predicted Cluster'] = clusters
+
+    # Mapping label stunting
     df['Stunting Label'] = df['Predicted Cluster'].apply(lambda x: 'Potensi Stunting' if x == 1 else 'Tidak Stunting')
 
-    # Hitung t-SNE
+    # Hitung t-SNE untuk visualisasi
     tsne_results = TSNE(n_components=2, random_state=42).fit_transform(X_normalized)
     df['t-SNE 1'] = tsne_results[:, 0]
     df['t-SNE 2'] = tsne_results[:, 1]
 
-    # Simpan ke file Excel
+    # Ubah nama kolom untuk tampilan konsisten
+    df.rename(columns={"Tinggi": "Tinggi Badan (cm)", "Berat": "Berat Badan (kg)"}, inplace=True)
+    # Tambahkan ID Balita berdasarkan indeks dan pastikan kolom Nama tetap ada
+    df.insert(0, "ID Balita", range(1, len(df) + 1))
+    
+    # Simpan hasil prediksi ke file Excel
     output_path = 'static/predicted_data.xlsx'
     df.to_excel(output_path, index=False)
 
