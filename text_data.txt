@@ -1,0 +1,172 @@
+2.2	Antropometri
+Antropometri adalah ilmu yang mempelajari pengukuran dimensi tubuh manusia, seperti tinggi badan, berat badan, lingkar kepala, dan lingkar lengan atas. Pengukuran ini digunakan untuk menilai pertumbuhan dan status gizi seseorang, khususnya pada anak-anak. Antropometri penting dalam penilaian status kesehatan dan pertumbuhan anak, terutama untuk mendeteksi masalah seperti malnutrisi, stunting, dan obesitas. 
+Standar Antropometri yang sudah disiapkan oleh terbitan edaran Kementrian Kesehatan Klasifikasi Standar Antropometri Ambang Batas Status Gizi Anak Berdasarkan Peraturan Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020 Tentang Standar Antropometri Anak untuk berat badan dan tinggi badan. 
+Standar Antropometri Anak berdasarkan pada parameter berat badan dan tinggi badan terdiri dari 4 (empat) indeks, yaitu:
+1.	Indeks Berat Badan menurut Umur (BB/U): Indeks BB/U mengindikasikan berat badan relatif anak dibandingkan dengan usianya. Ini berguna untuk menilai kondisi anak yang mengalami berat badan kurang atau sangat kurang, namun tidak untuk mengklasifikasikan kegemukan. Anak dengan BB/U rendah kemungkinan mengalami masalah pertumbuhan, sehingga perlu diperiksa dengan indeks BB/PB atau BB/TB atau IMT/U sebelum tindakan intervensi dilakukan.
+2.	Indeks Panjang Badan menurut Umur atau Tinggi Badan menurut Umur (PB/U atau TB/U): Indeks PB/U atau TB/U mencerminkan pertumbuhan panjang atau tinggi badan anak sesuai dengan usianya. Ini membantu mengidentifikasi anak-anak yang terlambat dalam pertumbuhan karena kurang gizi atau sering sakit. Anak yang tinggi menurut usianya juga dapat terdeteksi. Kondisi tinggi badan di atas normal biasanya disebabkan oleh gangguan endokrin, meskipun jarang terjadi di Indonesia.
+3.	Indeks Berat Badan menurut Panjang Badan/Tinggi Badan (BB/PB atau BB/TB): Indeks BB/PB atau BB/TB menunjukkan apakah berat badan anak sesuai dengan pertumbuhan panjang/tinggi badannya. Ini membantu mengidentifikasi anak-anak yang mengalami kekurangan gizi, gizi buruk, atau memiliki risiko kelebihan gizi. Kondisi gizi buruk bisa disebabkan oleh penyakit atau kekurangan asupan gizi yang baru atau kronis.
+4.	Indeks Masa Tubuh menurut Umur (IMT/U): IMT/U digunakan untuk mengkategorikan gizi anak sebagai buruk, kurang, baik, berisiko kelebihan gizi, kelebihan gizi, atau obesitas. Grafik IMT/U dan grafik BB/PB atau BB/TB cenderung memberikan hasil yang serupa, namun IMT/U lebih sensitif dalam mendeteksi kelebihan gizi dan obesitas. Anak dengan IMT/U di atas +1SD berisiko kelebihan gizi dan memerlukan penanganan lebih lanjut untuk mencegah kelebihan gizi dan obesitas.
+A.	Berdasarkan berat badan 
+Tabel 2. 1 Standar Gizi Dan Ambang Batas Berat Badan Balita
+Indeks 	Kategori Status Gizi 	Ambang Batas 
+(Z-Score) 
+Panjang Badan atau Tinggi Badan menurut Umur 
+(PB/U atau TB/U) anak usia 0 - 60 bulan 	Sangat pendek (severely stunted) 	<-3 SD 
+	Pendek (stunted) 	- 3 SD sd <- 2 SD 
+	Normal 	-2 SD sd +3 SD 
+	Tinggi2 	> +3 SD 
+Berat Badan menurut Panjang 
+Badan atau Tinggi 
+Badan (BB/PB atau 
+BB/TB) anak usia 
+0 - 60 bulan 	Gizi buruk (severely wasted) 	<-3 SD 
+	Gizi kurang (wasted) 	- 3 SD sd <- 2 SD 
+	Gizi baik (normal) 	-2 SD sd +1 SD 
+	Berisiko gizi lebih (possible risk of overweight) 	> + 1 SD sd + 2 SD 
+	Gizi lebih (overweight) 	> + 2 SD sd + 3 SD 
+	Obesitas (obese) 	> + 3 SD 
+Sumber : Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020 Tentang Standar Antropometri Anak
+Keterangan tambahan:
+1.	Anak yang masuk dalam kategori ini mungkin mengalami masalah pertumbuhan dan perlu dipastikan dengan menggunakan BB/TB atau IMT/U.
+2.	Anak yang termasuk dalam kategori ini umumnya sangat tinggi dan biasanya bukan masalah, kecuali jika ada kemungkinan gangguan endokrin seperti tumor yang menghasilkan hormon pertumbuhan. Sebaiknya dirujuk ke dokter spesialis anak jika ada kecurigaan terhadap gangguan endokrin, misalnya jika seorang anak sangat tinggi sesuai dengan usianya sementara tinggi orang tua normal.
+3.	Meskipun interpretasi IMT/U mencakup kategori gizi buruk dan gizi kurang, diagnosis gizi buruk dan gizi kurang menurut pedoman Tatalaksana Anak Gizi Buruk menggunakan Indeks Berat Badan menurut Panjang Badan atau Tinggi Badan (BB/PB atau BB/TB).
+B.	Standar deviasi klasifikasi gizi berat badan
+Peraturan Kementerian Kesehatan (Kemenkes) Republik Indonesia tahun 2020 mengenai antropometri dan penggunaan Z-Score untuk penilaian status gizi memang mengacu pada standar internasional yang dikeluarkan oleh World Health Organization (WHO). Z-Score atau skor Z adalah sebuah metode statistik untuk menunjukkan seberapa jauh dan ke arah mana nilai pengukuran seseorang (misalnya, tinggi atau berat badan) menyimpang dari median atau rata-rata populasi yang sehat pada kelompok usia dan jenis kelamin yang sama. 
+Dengan keterangan :
+a.	Warna merah pada sisi kiri tabel, yang dimulai dari -3 SD dan bergerak ke -2 SD menandakan berat badan yang jauh di bawah median, yang menunjukkan gizi buruk atau undernutrition. Dalam konteks ini, semakin ke kiri (semakin rendah Z-Score), semakin tinggi risiko untuk kondisi seperti wasting (kurus) atau stunting (pendek).
+b.	Warna kuning, biasanya menandakan kondisi peringatan atau waspada, dimana berat badan anak lebih rendah dari rata-rata tapi belum masuk kategori gizi buruk secara klinis.
+c.	Warna hijau di tengah menunjukkan kisaran normal atau sehat, dimana berat badan anak mendekati median (dalam kisaran -1 hingga +1 SD).
+d.	Warna yang semakin merah ke kanan tabel, mulai dari +2 SD hingga +3 SD menandakan berat badan yang jauh di atas median, yang mengindikasikan risiko untuk overweight atau obesitas. Semakin ke kanan (semakin tinggi Z-Score), semakin tinggi risiko kelebihan gizi.
+Berdasarkan Berat Badan
+Tabel 2. 2 Rentang Standar Deviasi BB dan TB dari kemenkes untuk Bayi dan Balita berdasarkan Umur
+Umur (bulan)	Berat Badan (Kg)
+	-3 SD	-2 SD	-1 SD	Median	+1 SD	+2 SD	+3 SD
+0	2.1 	2.5 	2.9 	3.3 	3.9 	4.4 	5.0 
+1	2.9 	3.4 	3.9 	4.5 	5.1 	5.8 	6.6 
+2	3.8 	4.3 	4.9 	5.6 	6.3 	7.1 	8.0 
+3	4.4 	5.0 	5.7 	6.4 	7.2 	8.0 	9.0 
+4	4.9 	5.6 	6.2 	7.0 	7.8 	8.7 	9.7 
+5	5.3 	6.0 	6.7 	7.5 	8.4 	9.3 	10.4 
+6	5.7 	6.4 	7.1 	7.9 	8.8 	9.8 	10.9 
+7	5.9 	6.7 	7.4 	8.3 	9.2 	10.3 	11.4 
+8	6.2 	6.9 	7.7 	8.6 	9.6 	10.7 	11.9 
+9	6.4 	7.1 	8.0 	8.9 	9.9 	11.0 	12.3 
+10	6.6 	7.4 	8.2 	9.2 	10.2 	11.4 	12.7 
+11	6.8 	7.6 	8.4 	9.4 	10.5 	11.7 	13.0 
+12	6.9 	7.7 	8.6 	9.6 	10.8 	12.0 	13.3 
+13	7.1 	7.9 	8.8 	9.9 	11.0 	12.3 	13.7 
+14	7.2 	8.1 	9.0 	10.1 	11.3 	12.6 	14.0 
+15	7.4 	8.3 	9.2 	10.3 	11.5 	12.8 	14.3 
+16	7.5 	8.4 	9.4 	10.5 	11.7 	13.1 	14.6 
+17	7.7 	8.6 	9.6 	10.7 	12.0 	13.4 	14.9 
+18	7.8 	8.8 	9.8 	10.9 	12.2 	13.7 	15.3 
+19	8.0 	8.9 	10.0 	11.1 	12.5 	13.9 	15.6 
+20	8.1 	9.1 	10.1 	11.3 	12.7 	14.2 	15.9 
+21	8.2 	9.2 	10.3 	11.5 	12.9 	14.5 	16.2 
+22	8.4 	9.4 	10.5 	11.8 	13.2 	14.7 	16.5 
+23	8.5 	9.5 	10.7 	12.0 	13.4 	15.0 	16.8 
+24	8.6 	9.7 	10.8 	12.2 	13.6 	15.3 	17.1 
+25	8.8 	9.8 	11.0 	12.4 	13.9 	15.5 	17.5 
+26	8.9 	10.0 	11.2 	12.5 	14.1 	15.8 	17.8 
+26	8.9 	10.0 	11.2 	12.5 	14.1 	15.8 	17.8 
+27	9.0 	10.1 	11.3 	12.7 	14.3 	16.1 	18.1 
+28	9.1 	10.2 	11.5 	12.9 	14.5 	16.3 	18.4 
+29	9.2 	10.4 	11.7 	13.1 	14.8 	16.6 	18.7 
+30	9.4 	10.5 	11.8 	13.3 	15.0 	16.9 	19.0 
+31	9.5 	10.7 	12.0 	13.5 	15.2 	17.1 	19.3 
+32	9.6 	10.8 	12.1 	13.7 	15.4 	17.4 	19.6 
+33	9.7 	10.9 	12.3 	13.8 	15.6 	17.6 	19.9 
+34	9.8 	11.0 	12.4 	14.0 	15.8 	17.8 	20.2 
+35	9.9 	11.2 	12.6 	14.2 	16.0 	18.1 	20.4 
+36	10.0 	11.3 	12.7 	14.3 	16.2 	18.3 	20.7 
+37	10.1 	11.4 	12.9 	14.5 	16.4 	18.6 	21.0 
+38	10.2 	11.5 	13.0 	14.7 	16.6 	18.8 	21.3 
+39	10.3 	11.6 	13.1 	14.8 	16.8 	19.0 	21.6 
+40	10.4 	11.8 	13.3 	15.0 	17.0 	19.3 	21.9 
+41	10.5 	11.9 	13.4 	15.2 	17.2 	19.5 	22.1 
+42	10.6 	12.0 	13.6 	15.3 	17.4 	19.7 	22.4 
+43	10.7 	12.1 	13.7 	15.5 	17.6 	20.0 	22.7 
+44	10.8 	12.2 	13.8 	15.7 	17.8 	20.2 	23.0 
+45	10.9 	12.4 	14.0 	15.8 	18.0 	20.5 	23.3 
+46	11.0 	12.5 	14.1 	16.0 	18.2 	20.7 	23.6 
+47	11.1 	12.6 	14.3 	16.2 	18.4 	20.9 	23.9 
+48	11.2 	12.7 	14.4 	16.3 	18.6 	21.2 	24.2 
+49	11.3 	12.8 	14.5 	16.5 	18.8 	21.4 	24.5 
+50	11.4 	12.9 	14.7 	16.7 	19.0 	21.7 	24.8 
+51	11.5 	13.1 	14.8 	16.8 	19.2 	21.9 	25.1 
+52	11.6 	13.2 	15.0 	17.0 	19.4 	22.2 	25.4 
+53	11.7 	13.3 	15.1 	17.2 	19.6 	22.4 	25.7 
+54	11.8 	13.4 	15.2 	17.3 	19.8 	22.7 	26.0 
+55	11.9 	13.5 	15.4 	17.5 	20.0 	22.9 	26.3 
+56	12.0 	13.6 	15.5 	17.7 	20.2 	23.2 	26.6 
+57	12.1 	13.7 	15.6 	17.8 	20.4 	23.4 	26.9 
+58	12.2 	13.8 	15.8 	18.0 	20.6 	23.7 	27.2 
+59	12.3 	14.0 	15.9 	18.2 	20.8 	23.9 	27.6 
+60	12.4 	14.1 	16.0 	18.3 	21.0 	24.2 	27.9 
+Sumber : Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020 Tentang Standar Antropometri Anak
+Berdasarkan tinggi badan
+Tabel 2. 1 Rentang Standar Deviasi BB dan TB dari kemenkes untuk Bayi dan Balita berdasarkan Umur
+Umur (bulan)	Panjang Badan (cm)
+	-3 SD	-2 SD	-1 SD	Median	+1 SD	+2 SD	+3 SD
+0	44.2 	46.1	48.0	49.9	51.8	53.7	55.6 
+1	48.9 	50.8	52.8	54.7	56.7	58.6	60.6 
+2	52.4 	54.4	56.4	58.4	60.4	62.4	64.4 
+3	55.3 	57.3	59.4	61.4	63.5	65.5	67.6 
+4	57.6 	59.7	61.8	63.9	66.0	68.0	70.1 
+5	59.6 	61.7	63.8	65.9	68.0	70.1	72.2 
+6	61.2 	63.3	65.5	67.6	69.8	71.9	74.0 
+7	62.7 	64.8	67.0	69.2	71.3	73.5	75.7 
+8	64.0 	66.2	68.4	70.6	72.8	75.0	77.2 
+9	65.2 	67.5	69.7	72.0	74.2	76.5	78.7 
+10	66.4 	68.7	71.0	73.3	75.6	77.9	80.1 
+11	67.6 	69.9	72.2	74.5	76.9	79.2	81.5 
+12	68.6 	71.0	73.4	75.7	78.1	80.5	82.9 
+13	69.6 	72.1	74.5	76.9	79.3	81.8	84.2 
+14	70.6 	73.1	75.6	78.0	80.5	83.0	85.5 
+15	71.6 	74.1	76.6	79.1	81.7	84.2	86.7 
+16	72.5 	75.0	77.6	80.2	82.8	85.4	88.0 
+17	73.3 	76.0	78.6	81.2	83.9	86.5	89.2 
+18	74.2 	76.9	79.6	82.3	85.0	87.7	90.4 
+19	75.0 	77.7	80.5	83.2	86.0	88.8	91.5 
+20	75.8 	78.6	81.4	84.2	87.0	89.8	92.6 
+21	76.5 	79.4	82.3	85.1	88.0	90.9	93.8 
+22	77.2 	80.2	83.1	86.0	89.0	91.9	94.9 
+23	78.0 	81.0	83.9	86.9	89.9	92.9	95.9 
+24	78.7 	81.7	84.8	87.8	90.9	93.9	97.0 
+25	78.6 	81.7	84.9	88.0	91.1	94.2	97.3 
+26	79.3 	82.5	85.6	88.8	92.0	95.2	98.3 
+27	79.9 	83.1	86.4	89.6	92.9	96.1	99.3 
+28	80.5 	83.8	87.1	90.4	93.7	97.0	100.3 
+29	81.1 	84.5	87.8	91.2	94.5	97.9	101.2 
+30	81.7 	85.1	88.5	91.9	95.3	98.7	102.1 
+31	82.3 	85.7	89.2	92.7	96.1	99.6	103.0 
+32	82.8 	86.4	89.9	93.4	96.9	100.4	103.9 
+33	83.4 	86.9	90.5	94.1	97.6	101.2	104.8 
+34	83.9 	87.5	91.1	94.8	98.4	102.0	105.6 
+35	84.4 	88.1	91.8	95.4	99.1	102.7	106.4 
+36	85.0 	88.7	92.4	96.1	99.8	103.5	107.2 
+37	85.5 	89.2	93.0	96.7	100.5	104.2	108.0 
+38	86.0 	89.8	93.6	97.4	101.2	105.0	108.8 
+39	86.5 	90.3	94.2	98.0	101.8	105.7	109.5 
+40	87.0 	90.9	94.7	98.6	102.5	106.4	110.3 
+41	87.5 	91.4	95.3	99.2	103.2	107.1	111.0 
+42	88.0 	91.9	95.9	99.9	103.8	107.8	111.7 
+43	88.4 	92.4	96.4	100.4	104.5	108.5	112.5 
+44	88.9 	93.0	97.0	101.0	105.1	109.1	113.2 
+45	89.4 	93.5	97.5	101.6	105.7	109.8	113.9 
+46	89.8 	94.0	98.1	102.2	106.3	110.4	114.6 
+47	90.3 	94.4	98.6	102.8	106.9	111.1	115.2 
+48	90.7 	94.9	99.1	103.3	107.5	111.7	115.9 
+49	91.2 	95.4	99.7	103.9	108.1	112.4	116.6 
+50	91.6 	95.9	100.2	104.4	108.7	113.0	117.3 
+51	92.1 	96.4	100.7	105.0	109.3	113.6	117.9 
+52	92.5 	96.9	101.2	105.6	109.9	114.2	118.6 
+53	93.0 	97.4	101.7	106.1	110.5	114.9	119.2 
+54	93.4 	97.8	102.3	106.7	111.1	115.5	119.9 
+55	93.9 	98.3	102.8	107.2	111.7	116.1	120.6 
+56	94.3 	98.8	103.3	107.8	112.3	116.7	121.2 
+57	94.7 	99.3	103.8	108.3	112.8	117.4	121.9 
+58	95.2 	99.7	104.3	108.9	113.4	118.0	122.6 
+59	95.6	100.2	104.8	109.4	114.0	118.6	123.2
+60	96.1	100.7	105.3	110.0	114.6	119.2	123.9
+Sumber : Peraturan Menteri Kesehatan Republik Indonesia Nomor 2 Tahun 2020 Tentang Standar Antropometri Anak
